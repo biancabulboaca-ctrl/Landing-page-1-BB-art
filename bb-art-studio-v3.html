@@ -141,6 +141,32 @@ nav{
   margin-bottom:60px;padding-bottom:0;
 }
 .filters{display:flex;gap:0}
+
+/* descriere colectie */
+.collection-desc{
+  max-height:0;overflow:hidden;
+  transition:max-height .5s ease, opacity .4s ease;
+  opacity:0;
+}
+.collection-desc.visible{
+  max-height:400px;
+  opacity:1;
+}
+.collection-desc-inner{
+  padding:40px 0 20px;
+  max-width:640px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  margin-bottom:48px;
+}
+.collection-desc-inner h3{
+  font-size:.72rem;letter-spacing:.35em;text-transform:uppercase;
+  color:#c9a84c;margin-bottom:18px;font-weight:600;
+  margin-top:-24px;
+}
+.collection-desc-inner p{
+  font-size:1.05rem;line-height:1.85;
+  color:rgba(255,255,255,0.55);
+}
 .flt{
   background:none;border:none;border-bottom:2px solid transparent;
   font-family:'Inter',sans-serif;font-size:.68rem;font-weight:400;
@@ -631,6 +657,14 @@ footer p{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgb
       <button class="flt on" data-f="all" data-ro="Toate" data-en="All">Toate</button>
       <button class="flt" data-f="suflete" data-ro="Frânturi de Suflete" data-en="Fragments of Souls">Frânturi de Suflete</button>
       <button class="flt" data-f="plasturi" data-ro="Plasturi Naturali" data-en="Natural Patches">Plasturi Naturali</button>
+    </div>
+  </div>
+
+  <!-- descriere colectie -->
+  <div class="collection-desc" id="collection-desc">
+    <div class="collection-desc-inner">
+      <h3 id="collection-desc-title"></h3>
+      <p id="collection-desc-text"></p>
     </div>
   </div>
 
@@ -1195,10 +1229,40 @@ function setLang(l) {
   });
   // status badges galerie
   document.querySelectorAll('.item-status-badge').forEach(b => b.textContent = b.dataset[l]||b.dataset.ro);
+  // descriere colectie
+  const activeFilter = document.querySelector('.flt.on');
+  if (activeFilter) showCollectionDesc(activeFilter.dataset.f);
   // lightbox — reîncarcă item-ul curent dacă e deschis
   if (lb.classList.contains('open') && lbItems[lbIdx]) {
     openLbItem(lbItems[lbIdx]);
   }
+}
+
+// ── DESCRIERI COLECTII ──
+const collectionDescs = {
+  suflete: {
+    ro: { title: 'Frânturi de Suflete', text: 'Sunt urme.\nUrme lăsate de oameni care mi-au fost aproape.\nSau doar au trecut prin viața mea suficient cât să lase lumină, umbră, o expresie care nu s-a șters.\nÎn fiecare chip există o poveste nerostită.\nNu încerc să o explic.\nÎncerc doar să o păstrez. Un fel de jurnal de chipuri.\nAceste lucrări nu sunt despre perfecțiunea trăsăturilor.\nSunt despre vibrație.\nDespre ce rămâne după ce momentul trece.\nFragmente.\nAmintiri.\n\nFrânturi de suflete.' },
+    en: { title: 'Fragments of Souls',  text: 'They are traces.\nTraces left by people who were close to me.\nOr who simply passed through my life long enough to leave light, shadow, an expression that never faded.\nIn every face there is an unspoken story.\nI do not try to explain it.\nI only try to preserve it. A kind of journal of faces.\nThese works are not about the perfection of features.\nThey are about vibration.\nAbout what remains after the moment has passed.\nFragments.\nMemories.\n\nFragments of Souls.' }
+  },
+  plasturi: {
+    ro: { title: 'Plasturi Naturali', text: 'Sunt plasturi.\nNaturali, organici... adunați din tot felul de părți.\nAm căutat în texturile pădurilor și în lumina crângurilor un remediu pentru zgomotul cotidian.\nNu este doar un amalgam de peisaje, ci o serie de pansamente vizuale pentru suflet.\nFiecare lucrare reprezintă o zonă de refugiu, un fragment de natură care m-a ajutat să mă vindec și să mă regăsesc atunci când cifrele și formulele deveneau prea grele. Sunt bucăți de verde și pământ, transpuse pe pânză pentru a opri timpul în loc.\n\nPlasturi naturali.' },
+    en: { title: 'Natural Patches',   text: 'They are patches.\nNatural, organic... gathered from all sorts of places.\nI searched in the textures of forests and the light of groves for a remedy against the noise of everyday life.\nThis is not merely a collection of landscapes, but a series of visual bandages for the soul.\nEach piece represents a place of refuge, a fragment of nature that helped me heal and find myself again when numbers and formulas grew too heavy. They are pieces of green and earth, transposed onto canvas to stop time in its tracks.\n\nNatural Patches.' }
+  }
+};
+
+function showCollectionDesc(f) {
+  const desc = document.getElementById('collection-desc');
+  const titleEl = document.getElementById('collection-desc-title');
+  const textEl  = document.getElementById('collection-desc-text');
+  const l = lang === 'en' ? 'en' : 'ro';
+
+  if (f === 'all' || !collectionDescs[f] || !collectionDescs[f][l].text) {
+    desc.classList.remove('visible');
+    return;
+  }
+  titleEl.textContent = collectionDescs[f][l].title;
+  textEl.innerHTML    = collectionDescs[f][l].text.replace(/\n/g, '<br>');
+  desc.classList.add('visible');
 }
 
 // ── FILTER ──
@@ -1220,6 +1284,7 @@ document.querySelectorAll('.flt').forEach(btn => {
     document.querySelectorAll('.item').forEach(item =>
       item.classList.toggle('on', f==='all' || item.dataset.f===f)
     );
+    showCollectionDesc(f);
   });
 });
 updateFilterCounts();
