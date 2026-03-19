@@ -149,22 +149,22 @@ nav{
   opacity:0;
 }
 .collection-desc.visible{
-  max-height:400px;
+  max-height:3000px;
   opacity:1;
 }
 .collection-desc-inner{
-  padding:40px 0 20px;
+  padding:28px 0 16px;
   max-width:640px;
   border-bottom:1px solid rgba(255,255,255,0.07);
-  margin-bottom:48px;
+  margin-bottom:40px;
 }
 .collection-desc-inner h3{
   font-size:.72rem;letter-spacing:.35em;text-transform:uppercase;
-  color:#c9a84c;margin-bottom:18px;font-weight:600;
+  color:#c9a84c;margin-bottom:14px;font-weight:600;
   margin-top:-24px;
 }
 .collection-desc-inner p{
-  font-size:1.05rem;line-height:1.85;
+  font-size:.88rem;line-height:1.7;
   color:rgba(255,255,255,0.55);
 }
 .flt{
@@ -1085,6 +1085,10 @@ footer p{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgb
          data-en="If you feel a resonance with any of my experiences, if you find in my experiments an emotion or a story that moves you — I would be truly glad.">
         Dacă simți o rezonanță cu vreuna din trăirile mele, dacă găsești în experimentele mele vreo emoție sau o poveste care te atinge, m-aș bucura nespus.
       </p>
+      <p data-ro="Dacă această tensiune dintre rigoare și libertate îți este familiară, este posibil ca lucrările mele să creeze o rezonanță personală."
+         data-en="If this tension between rigour and freedom feels familiar to you, my work may well create a personal resonance.">
+        Dacă această tensiune dintre rigoare și libertate îți este familiară, este posibil ca lucrările mele să creeze o rezonanță personală.
+      </p>
     </div>
 
     <div class="about-cta-wrap">
@@ -1240,6 +1244,10 @@ function setLang(l) {
 
 // ── DESCRIERI COLECTII ──
 const collectionDescs = {
+  all: {
+    ro: { title: 'Între rigoare și libertate', text: 'Există momente în care totul este control. Și momente în care simți nevoia să renunți la el. Lucrările mele există exact în acest spațiu — nu sunt despre perfecțiune, ci despre echilibru între structură și emoție, între ceea ce poate fi explicat și ceea ce doar se simte.\nFiecare lucrare pornește dintr-un contrast: mintea care analizează și nevoia de a lăsa lucrurile să curgă. Rezultatul nu este doar vizual — este o stare care se instalează în timp, una care nu cere explicații, dar care creează recunoaștere.\nÎn aceste lucrări vei găsi fragmente de emoție pe care le-ai simțit, dar nu le-ai formulat, liniștea care apare când nu mai e nevoie să controlezi tot și un spațiu în care percepția devine personală. Fiecare privitor duce mai departe propria interpretare — și exact acolo începe valoarea reală a lucrării.\nSunt pentru cei care caută profunzime, nu doar decor, prezență, nu doar imagine, o relație personală cu ceea ce privesc. Fiecare lucrare este parte dintr-o explorare continuă. Dacă rezonezi cu această căutare, te invit să o urmărești.' },
+    en: { title: 'Between Rigour and Freedom', text: 'There are moments when everything is control. And moments when you feel the need to let go of it. My work exists precisely in this space — not about perfection, but about balance between structure and emotion, between what can be explained and what can only be felt.\nEach piece begins from a contrast: the mind that analyses and the need to let things flow. The result is not only visual — it is a state that settles in over time, one that asks for no explanation, but creates recognition.\nIn these works you will find fragments of emotion you have felt but never formulated, the stillness that comes when you no longer need to control everything, and a space in which perception becomes personal. Every viewer carries their own interpretation forward — and that is exactly where the true value of the work begins.\nThey are for those who seek depth, not just decoration, presence, not just image, a personal relationship with what they observe. Each work is part of an ongoing exploration. If you resonate with this search, I invite you to follow it.' }
+  },
   suflete: {
     ro: { title: 'Frânturi de Suflete', text: 'Sunt urme.\nUrme lăsate de oameni care mi-au fost aproape.\nSau doar au trecut prin viața mea suficient cât să lase lumină, umbră, o expresie care nu s-a șters.\nÎn fiecare chip există o poveste nerostită.\nNu încerc să o explic.\nÎncerc doar să o păstrez. Un fel de jurnal de chipuri.\nAceste lucrări nu sunt despre perfecțiunea trăsăturilor.\nSunt despre vibrație.\nDespre ce rămâne după ce momentul trece.\nFragmente.\nAmintiri.\n\nFrânturi de suflete.' },
     en: { title: 'Fragments of Souls',  text: 'They are traces.\nTraces left by people who were close to me.\nOr who simply passed through my life long enough to leave light, shadow, an expression that never faded.\nIn every face there is an unspoken story.\nI do not try to explain it.\nI only try to preserve it. A kind of journal of faces.\nThese works are not about the perfection of features.\nThey are about vibration.\nAbout what remains after the moment has passed.\nFragments.\nMemories.\n\nFragments of Souls.' }
@@ -1256,7 +1264,7 @@ function showCollectionDesc(f) {
   const textEl  = document.getElementById('collection-desc-text');
   const l = lang === 'en' ? 'en' : 'ro';
 
-  if (f === 'all' || !collectionDescs[f] || !collectionDescs[f][l].text) {
+  if (!collectionDescs[f] || !collectionDescs[f][l].text) {
     desc.classList.remove('visible');
     return;
   }
@@ -1288,6 +1296,7 @@ document.querySelectorAll('.flt').forEach(btn => {
   });
 });
 updateFilterCounts();
+showCollectionDesc('all');
 
 // ── STATUS BADGES (galerie) ──
 document.querySelectorAll('.item').forEach(item => {
