@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bianca Bulboacă — Painting</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f0ece5;
+  --bg2:#e8e2d9;
+  --paper:#faf7f3;
+  --ink:#1c1917;
+  --earth:#8c6e4b;
+  --clay:#b8916a;
+  --sand:#d4b896;
+  --pale:#ddd6cc;
+  --mid:#7a6e63;
+  --gold:#C9A84C;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Jost',sans-serif;overflow-x:hidden;cursor:none}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.5}
+
+#cur{position:fixed;width:9px;height:9px;background:var(--earth);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s}
+#cur-r{position:fixed;width:36px;height:36px;border:1px solid rgba(140,110,75,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .14s ease}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:22px 60px;background:rgba(240,236,229,.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--pale)}
+.logo-w{display:flex;align-items:center;gap:14px}
+.logo-w img{width:36px;height:36px;object-fit:contain}
+.logo-t{display:flex;flex-direction:column;line-height:1.15}
+.logo-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;letter-spacing:1px;color:var(--ink)}
+.logo-sub{font-size:7.5px;letter-spacing:4px;text-transform:uppercase;color:var(--mid)}
+nav ul{list-style:none;display:flex;gap:36px}
+nav a{color:var(--mid);text-decoration:none;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;font-weight:300;transition:color .3s}
+nav a:hover{color:var(--earth)}
+.nav-cta{background:var(--ink)!important;color:var(--paper)!important;padding:10px 24px;transition:background .3s!important}
+.nav-cta:hover{background:var(--earth)!important}
+
+/* HERO */
+#hero{min-height:100vh;display:grid;grid-template-columns:50% 50%;padding-top:80px;overflow:hidden;position:relative;z-index:1}
+.hero-l{display:flex;flex-direction:column;justify-content:center;padding:80px 56px 80px 80px;position:relative}
+.hero-deco{position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',serif;font-size:500px;font-weight:300;font-style:italic;color:rgba(140,110,75,.04);line-height:1;pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:12px;margin-bottom:32px;opacity:0;animation:up .9s ease .2s forwards}
+.badge-line{width:28px;height:1px;background:var(--earth)}
+.badge-t{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--earth)}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,5.2vw,84px);font-weight:300;line-height:1.0;opacity:0;animation:up .9s ease .4s forwards}
+h1 em{font-style:italic;color:var(--earth)}
+h1 .dim{color:var(--mid)}
+.hero-quote{margin-top:28px;max-width:420px;font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;font-weight:300;color:var(--mid);line-height:1.75;opacity:0;animation:up .9s ease .65s forwards}
+.hero-quote::before{content:'"';font-size:40px;color:var(--earth);line-height:0;vertical-align:-12px;margin-right:4px}
+.hero-actions{display:flex;gap:18px;align-items:center;margin-top:44px;opacity:0;animation:up .9s ease .9s forwards}
+.btn-earth{display:inline-block;background:var(--earth);color:var(--paper);padding:14px 36px;font-size:9px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:background .3s,transform .2s}
+.btn-earth:hover{background:var(--ink);transform:translateY(-2px)}
+.btn-ghost{display:inline-block;color:var(--ink);padding:14px 0;font-size:9px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--pale);transition:color .3s,border-color .3s}
+.btn-ghost:hover{color:var(--earth);border-color:var(--earth)}
+.hero-stats{display:flex;gap:40px;margin-top:56px;padding-top:28px;border-top:1px solid var(--pale);opacity:0;animation:up .9s ease 1.1s forwards}
+.s-n{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--ink);line-height:1}
+.s-n sup{font-size:16px;color:var(--earth)}
+.s-l{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);margin-top:5px}
+.hero-r{position:relative;background:var(--bg2);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.featured-wrap{position:relative;z-index:2;width:74%;opacity:0;animation:up 1.1s ease .5s forwards}
+.featured-img{width:100%;display:block;box-shadow:12px 12px 40px rgba(28,25,23,.18),0 0 0 1px rgba(140,110,75,.1)}
+.featured-caption{position:absolute;bottom:-1px;left:-1px;right:-1px;background:rgba(240,236,229,.96);backdrop-filter:blur(10px);padding:16px 22px;border-top:2px solid var(--earth)}
+.fc-title{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--ink)}
+.fc-row{display:flex;justify-content:space-between;align-items:center;margin-top:7px}
+.fc-tech{font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid)}
+.fc-price{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--earth)}
+.fc-btn{font-size:8px;letter-spacing:2px;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:7px 14px;text-decoration:none;transition:background .3s;cursor:none}
+.fc-btn:hover{background:var(--earth)}
+.dot{position:absolute;border-radius:50%;animation:float 4s ease-in-out infinite}
+
+/* STRIP */
+.strip{position:relative;z-index:1;background:var(--ink);padding:11px 0;overflow:hidden}
+.strip-track{display:flex;white-space:nowrap;animation:mq 28s linear infinite}
+.strip-track span{font-size:9px;letter-spacing:3.5px;text-transform:uppercase;color:rgba(240,236,229,.5);padding:0 26px}
+.strip-track .acc{color:var(--earth)}
+
+/* COLLECTIONS NAV */
+#cols-nav{position:relative;z-index:1;padding:80px 80px 0;background:var(--paper)}
+.cols-nav-inner{display:flex;gap:3px}
+.col-tab{
+  flex:1;padding:40px 36px;background:var(--bg2);cursor:none;
+  border-bottom:3px solid transparent;transition:background .3s,border-color .3s;
+  position:relative;overflow:hidden;
+}
+.col-tab.active{background:var(--paper);border-bottom-color:var(--earth)}
+.col-tab:hover{background:var(--paper)}
+.col-tab-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:rgba(140,110,75,.12);line-height:1;margin-bottom:10px}
+.col-tab-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;font-style:italic;color:var(--ink)}
+.col-tab-sub{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--mid);margin-top:8px}
+.col-tab-count{position:absolute;top:20px;right:24px;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--earth);border:1px solid rgba(140,110,75,.3);padding:4px 10px}
+
+/* COLLECTION SECTION */
+.collection-section{display:none;position:relative;z-index:1}
+.collection-section.active{display:block}
+
+/* INTRO */
+.col-intro{padding:60px 80px 40px;background:var(--paper);text-align:center;max-width:860px;margin:0 auto}
+.intro-tag{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--earth);margin-bottom:18px}
+.intro-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,3.8vw,54px);font-weight:300;color:var(--ink);line-height:1.1}
+.intro-h2 em{font-style:italic;color:var(--earth)}
+.intro-div{width:44px;height:2px;background:var(--earth);margin:24px auto}
+.intro-p{font-size:14px;line-height:2;color:var(--mid);font-weight:300}
+
+/* GALLERY */
+.gallery-wrap{padding:40px 60px 100px;background:var(--paper)}
+.gallery-grid{columns:3;column-gap:20px}
+.g-item{break-inside:avoid;margin-bottom:20px;position:relative;background:var(--bg);cursor:none;transition:transform .4s ease,box-shadow .4s ease}
+.g-item:hover{transform:translateY(-4px);box-shadow:0 24px 60px rgba(28,25,23,.12)}
+.g-img-wrap{overflow:hidden;position:relative}
+.g-img{width:100%;display:block;transition:transform .6s ease}
+.g-item:hover .g-img{transform:scale(1.03)}
+.g-badge{position:absolute;top:14px;right:14px;font-size:7px;letter-spacing:2.5px;text-transform:uppercase;padding:5px 10px}
+.avail{background:rgba(107,124,94,.85);color:#fff}
+.b-sold{background:rgba(90,96,104,.75);color:#fff}
+.g-body{padding:16px 18px 20px}
+.g-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;font-weight:400;color:var(--ink)}
+.g-tech{font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin-top:4px}
+.g-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--pale)}
+.g-price{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--earth)}
+.g-btn{font-size:8px;letter-spacing:2px;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:7px 12px;border:none;cursor:none;font-family:'Jost',sans-serif;transition:background .3s}
+.g-btn:hover{background:var(--earth)}
+
+/* ABOUT */
+#about{position:relative;z-index:1;padding:100px 80px;display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;background:var(--bg2);overflow:hidden}
+#about::after{content:'B';position:absolute;right:-80px;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',serif;font-size:600px;font-weight:300;font-style:italic;color:rgba(140,110,75,.04);line-height:1;pointer-events:none}
+.about-img{position:relative;aspect-ratio:4/5;overflow:visible}
+.about-img img{width:100%;height:100%;object-fit:cover;display:block}
+.about-corner{position:absolute;top:-14px;left:-14px;width:44px;height:44px;background:var(--earth);opacity:.65}
+.about-q{position:absolute;bottom:-20px;right:-28px;background:var(--ink);padding:24px 26px;max-width:230px;z-index:2}
+.about-q p{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--paper);line-height:1.65}
+.about-q cite{display:block;margin-top:10px;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--earth);font-style:normal}
+.ab-tag{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--earth);margin-bottom:18px}
+.ab-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,3.8vw,52px);font-weight:300;line-height:1.15;color:var(--ink)}
+.ab-h2 em{font-style:italic;color:var(--earth)}
+.ab-div{width:44px;height:2px;background:var(--earth);margin:24px 0}
+.ab-p{font-size:13.5px;line-height:2;color:var(--mid)}
+.ab-sig{margin-top:32px;font-family:'Cormorant Garamond',serif;font-size:30px;font-style:italic;color:var(--earth)}
+.ab-links{margin-top:28px;display:flex;flex-direction:column;gap:8px}
+.ab-link{font-size:11px;color:var(--mid);text-decoration:none;letter-spacing:1px;transition:color .3s}
+.ab-link:hover{color:var(--earth)}
+
+/* CONTACT */
+#contact{position:relative;z-index:1;padding:100px 80px;background:var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;overflow:hidden}
+#contact::before{content:'';position:absolute;top:0;right:0;bottom:0;width:50%;background:linear-gradient(to left,rgba(140,110,75,.07),transparent);pointer-events:none}
+.c-tag{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--earth);margin-bottom:18px}
+.c-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4vw,54px);font-weight:300;color:var(--paper);line-height:1.1}
+.c-h2 em{font-style:italic;color:var(--earth)}
+.c-p{font-size:13px;line-height:1.9;color:rgba(240,236,229,.45);margin-top:22px;max-width:360px}
+.c-dets{margin-top:40px;display:flex;flex-direction:column;gap:14px}
+.c-d{display:flex;align-items:center;gap:14px}
+.c-d-i{width:30px;height:30px;border:1px solid rgba(140,110,75,.4);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.c-d-t{font-size:11px;color:rgba(240,236,229,.5);letter-spacing:.5px}
+.c-d-t a{color:var(--earth);text-decoration:none}
+.con-r{display:flex;flex-direction:column;gap:14px}
+.inp{width:100%;background:rgba(240,236,229,.05);border:1px solid rgba(240,236,229,.1);padding:15px 18px;font-size:13px;color:var(--paper);font-family:'Jost',sans-serif;outline:none;transition:border-color .3s}
+.inp::placeholder{color:rgba(240,236,229,.3)}
+.inp:focus{border-color:var(--earth)}
+textarea.inp{resize:none;height:110px}
+.btn-send{background:var(--earth);color:var(--paper);padding:15px;font-size:9px;letter-spacing:3px;text-transform:uppercase;border:none;cursor:none;font-family:'Jost',sans-serif;transition:background .3s;width:100%}
+.btn-send:hover{background:var(--clay)}
+
+/* FOOTER */
+footer{position:relative;z-index:1;background:var(--bg);padding:32px 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--pale)}
+.f-logo{display:flex;align-items:center;gap:12px}
+.f-logo img{width:28px;height:28px;object-fit:contain}
+.f-logo span{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:var(--ink)}
+footer p{font-size:9px;letter-spacing:1.5px;color:var(--mid)}
+
+/* MODAL */
+#modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(28,25,23,.88);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:40px}
+#modal.open{display:flex}
+.modal-inner{background:var(--paper);max-width:900px;width:100%;display:grid;grid-template-columns:1fr 1fr;position:relative;animation:up .4s ease}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--ink);color:var(--paper);border:none;cursor:none;width:36px;height:36px;font-size:18px;z-index:2;display:flex;align-items:center;justify-content:center}
+.modal-img-wrap{overflow:hidden;max-height:520px}
+.modal-img{width:100%;height:100%;object-fit:cover;display:block}
+.modal-body{padding:40px 36px;display:flex;flex-direction:column;justify-content:center}
+.modal-col{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--earth);margin-bottom:12px}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-style:italic;font-weight:400;color:var(--ink);line-height:1.2}
+.modal-div{width:36px;height:2px;background:var(--earth);margin:18px 0}
+.modal-info p{font-size:12px;line-height:1.9;color:var(--mid);margin-bottom:6px}
+.modal-btn{display:block;margin-top:20px;background:var(--ink);color:var(--paper);padding:14px;font-size:9px;letter-spacing:3px;text-transform:uppercase;text-align:center;text-decoration:none;transition:background .3s;cursor:none;border:none;font-family:'Jost',sans-serif;width:100%}
+.modal-btn:hover{background:var(--earth)}
+
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+
+@media(max-width:960px){
+  nav{padding:20px 24px}
+  nav ul{display:none}
+  #hero{grid-template-columns:1fr}
+  .hero-r{height:70vw;min-height:300px}
+  .hero-l{padding:80px 24px 60px}
+  #cols-nav{padding:60px 24px 0}
+  .cols-nav-inner{flex-direction:column}
+  .gallery-wrap{padding:40px 20px 80px;columns:1}
+  .gallery-grid{columns:1}
+  #about,#contact{grid-template-columns:1fr;gap:48px;padding:80px 24px}
+  .about-q{position:relative;bottom:auto;right:auto;max-width:100%;margin-top:16px}
+  footer{flex-direction:column;gap:12px;text-align:center;padding:28px 24px}
+  .modal-inner{grid-template-columns:1fr}
+  .modal-img-wrap{height:280px}
+  .col-intro{padding:40px 24px 20px}
+}
+@media(min-width:600px) and (max-width:960px){
+  .gallery-grid{columns:2}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- MODAL -->
+<div id="modal">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-img-wrap"><img class="modal-img" id="modal-img" src="" alt=""></div>
+    <div class="modal-body">
+      <div class="modal-col" id="modal-col"></div>
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-div"></div>
+      <div class="modal-info" id="modal-info"></div>
+      <button class="modal-btn" onclick="commandPainting()">Comandă această lucrare</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo-w">
+    <img src="logo.png" alt="BB">
+    <div class="logo-t">
+      <span class="logo-name">Bianca Bulboacă</span>
+      <span class="logo-sub">Painting</span>
+    </div>
+  </div>
+  <ul>
+    <li><a href="#cols-nav">Colecții</a></li>
+    <li><a href="#about">Artist</a></li>
+    <li><a href="#contact" class="nav-cta">Comandă</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-l">
+    <div class="hero-deco">B</div>
+    <div class="badge"><div class="badge-line"></div><span class="badge-t">Lucrări Originale · București · 2025</span></div>
+    <h1>Artă care<br><em>trăiește</em><br><span class="dim">în casa ta.</span></h1>
+    <p class="hero-quote">Pictez de când mă știu, iar culoarea a fost mereu un spațiu de liniște.</p>
+    <div class="hero-actions">
+      <a href="#cols-nav" class="btn-earth">Explorează Colecțiile</a>
+      <a href="#contact" class="btn-ghost">Comandă</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="s-n">2<sup>col</sup></div><div class="s-l">Colecții 2025</div></div>
+      <div><div class="s-n">30<sup>+</sup></div><div class="s-l">Lucrări Originale</div></div>
+      <div><div class="s-n">100<sup>%</sup></div><div class="s-l">Unicat</div></div>
+    </div>
+  </div>
+  <div class="hero-r">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.1" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice">
+      <path d="M-50 400 Q150 100 350 400 Q550 700 750 300" stroke="rgba(140,110,75,.8)" stroke-width="130" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="featured-wrap">
+      <img class="featured-img" src="in_cires.png" alt="În cireș">
+      <div class="featured-caption">
+        <div class="fc-title">În cireș</div>
+        <div class="fc-row">
+          <span class="fc-tech">Acrilic, ulei · 120×100 cm · 2025</span>
+          <a href="#contact" class="fc-btn">Interesat</a>
+        </div>
+      </div>
+    </div>
+    <div class="dot" style="top:12%;left:8%;width:10px;height:10px;background:var(--earth);opacity:.45"></div>
+    <div class="dot" style="top:22%;right:10%;width:6px;height:6px;background:var(--gold);opacity:.55;animation-delay:.8s"></div>
+    <div class="dot" style="bottom:18%;left:6%;width:14px;height:14px;background:rgba(156,90,60,.4);animation-delay:1.4s"></div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-track">
+    <span class="acc">Bianca Bulboacă</span><span>·</span>
+    <span>Frânturi de Suflete</span><span>·</span>
+    <span>Plasturi Naturali</span><span>·</span>
+    <span>Acrilic, Ulei</span><span>·</span>
+    <span>Lucrări Originale</span><span>·</span>
+    <span>București · 2025</span><span>·</span>
+    <span class="acc">Bianca Bulboacă</span><span>·</span>
+    <span>Frânturi de Suflete</span><span>·</span>
+    <span>Plasturi Naturali</span><span>·</span>
+    <span>Acrilic, Ulei</span><span>·</span>
+    <span>Lucrări Originale</span><span>·</span>
+    <span>București · 2025</span><span>·</span>
+  </div>
+</div>
+
+<!-- COLLECTIONS TABS -->
+<section id="cols-nav">
+  <div class="cols-nav-inner">
+    <div class="col-tab active" onclick="switchCol('col1')">
+      <div class="col-tab-num">01</div>
+      <div class="col-tab-title">Frânturi de Suflete</div>
+      <div class="col-tab-sub">Portrete · Emoție · Memorie</div>
+      <div class="col-tab-count">11 lucrări</div>
+    </div>
+    <div class="col-tab" onclick="switchCol('col2')">
+      <div class="col-tab-num">02</div>
+      <div class="col-tab-title">Plasturi Naturali</div>
+      <div class="col-tab-sub">Natură · Peisaj · Refugiu</div>
+      <div class="col-tab-count">19 lucrări</div>
+    </div>
+  </div>
+</section>
+
+<!-- COLLECTION 1: FRÂNTURI DE SUFLETE -->
+<div id="col1" class="collection-section active">
+  <div class="col-intro">
+    <div class="intro-tag">Colecția I · 2025</div>
+    <h2 class="intro-h2">Frânturi de <em>Suflete</em></h2>
+    <div class="intro-div"></div>
+    <p class="intro-p">Sunt urme. Urme lăsate de oameni care mi-au fost aproape. Sau doar au trecut prin viața mea suficient cât să lase lumină, umbră, o expresie care nu s-a șters.</p>
+    <p class="intro-p" style="margin-top:12px">În fiecare chip există o poveste nerostită. Nu încerc să o explic. Încerc doar să o păstrez. Un fel de jurnal de chipuri.</p>
+    <p class="intro-p" style="margin-top:12px">Aceste lucrări nu sunt despre perfecțiunea trăsăturilor. Sunt despre vibrație. Despre ce rămâne după ce momentul trece. Fragmente. Amintiri. Frânturi de suflete.</p>
+  </div>
+  <div class="gallery-wrap">
+    <div class="gallery-grid">
+
+      <div class="g-item" onclick="openModal('ina_molii.png','Frânturi de Suflete','Ina și moliile','Acrilic, ulei · 70×80 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="ina_molii.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Ina și moliile</div>
+          <div class="g-tech">Acrilic, ulei · 70×80 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('iris.png','Frânturi de Suflete','Iris și calul','Acrilic, ulei · 70×80 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="iris.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Iris și calul</div>
+          <div class="g-tech">Acrilic, ulei · 70×80 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('pisicoase.png','Frânturi de Suflete','2 Pisicoase','Acrilic, ulei, pastel · 40×40 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="pisicoase.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">2 Pisicoase</div>
+          <div class="g-tech">Acrilic, ulei, pastel · 40×40 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('pui_mare.png','Frânturi de Suflete','6 Pui','Acrilic, ulei, pastel · 80×60 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="pui_mare.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">6 Pui</div>
+          <div class="g-tech">Acrilic, ulei, pastel · 80×60 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('andrei.png','Frânturi de Suflete','Andrei Rădașcă','Acrilic, ulei, pastel · 70×50 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="andrei.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Andrei Rădașcă</div>
+          <div class="g-tech">Acrilic, ulei, pastel · 70×50 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('fetita.png','Frânturi de Suflete','Fetița curcubeu','Acrilic, ulei, pastel · 70×80 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="fetita.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Fetița curcubeu</div>
+          <div class="g-tech">Acrilic, ulei, pastel · 70×80 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('ina_lina.png','Frânturi de Suflete','Ina Lina','Acrilic, ulei, pastel · 40×40 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="ina_lina.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Ina Lina</div>
+          <div class="g-tech">Acrilic, ulei, pastel · 40×40 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('mama_buna.png','Frânturi de Suflete','Mama Bună','Acrilic, ulei, pastel · 40×40 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="mama_buna.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Mama Bună</div>
+          <div class="g-tech">Acrilic, ulei, pastel · 40×40 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('plasture.png','Frânturi de Suflete','Plasture pe suflet','Acrilic, ulei, pastel · 40×40 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="plasture.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Plasture pe suflet</div>
+          <div class="g-tech">Acrilic, ulei, pastel · 40×40 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('pui_mic.png','Frânturi de Suflete','2 Pui','Acrilic, ulei, pastel · 40×40 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="pui_mic.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">2 Pui</div>
+          <div class="g-tech">Acrilic, ulei, pastel · 40×40 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('dinti.png','Frânturi de Suflete','2 Dinți și 7 păsări','Acrilic, ulei, pastel · 70×50 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="dinti.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">2 Dinți și 7 păsări</div>
+          <div class="g-tech">Acrilic, ulei, pastel · 70×50 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- COLLECTION 2: PLASTURI NATURALI -->
+<div id="col2" class="collection-section">
+  <div class="col-intro">
+    <div class="intro-tag">Colecția II · 2025</div>
+    <h2 class="intro-h2">Plasturi <em>Naturali</em></h2>
+    <div class="intro-div"></div>
+    <p class="intro-p">Sunt plasturi. Naturali, organici... adunați din tot felul de părți. Am căutat în texturile pădurilor și în lumina crângurilor un remediu pentru zgomotul cotidian.</p>
+    <p class="intro-p" style="margin-top:12px">Nu este doar un amalgam de peisaje, ci o serie de pansamente vizuale pentru suflet. Fiecare lucrare reprezintă o zonă de refugiu, un fragment de natură care m-a ajutat să mă vindec și să mă regăsesc atunci când cifrele și formulele deveneau prea grele.</p>
+    <p class="intro-p" style="margin-top:12px">Sunt bucăți de verde și pământ, transpuse pe pânză pentru a opri timpul în loc.</p>
+  </div>
+  <div class="gallery-wrap">
+    <div class="gallery-grid">
+
+      <div class="g-item" onclick="openModal('in_cires.png','Plasturi Naturali','În cireș','Acrilic, ulei · 120×100 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="in_cires.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">În cireș</div>
+          <div class="g-tech">Acrilic, ulei · 120×100 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('cires.jpg','Plasturi Naturali','Cireș','Acrilic, ulei · 90×70 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="cires.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Cireș</div>
+          <div class="g-tech">Acrilic, ulei · 90×70 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('padure_albastra.jpg','Plasturi Naturali','Pădure albastră','Acrilic, ulei · 130×100 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="padure_albastra.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Pădure albastră</div>
+          <div class="g-tech">Acrilic, ulei · 130×100 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('caleidoscop.jpg','Plasturi Naturali','Caleidoscop','Acrilic, ulei · 100×100 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="caleidoscop.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Caleidoscop</div>
+          <div class="g-tech">Acrilic, ulei · 100×100 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('la_aluni.jpg','Plasturi Naturali','La aluni','Acrilic, ulei · 100×90 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="la_aluni.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">La aluni</div>
+          <div class="g-tech">Acrilic, ulei · 100×90 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('nuferi1.jpg','Plasturi Naturali','Nuferi I','Acrilic, ulei · 70×50 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="nuferi1.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Nuferi I</div>
+          <div class="g-tech">Acrilic, ulei · 70×50 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('nuferi2.jpg','Plasturi Naturali','Nuferi II','Acrilic, ulei · 70×50 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="nuferi2.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Nuferi II</div>
+          <div class="g-tech">Acrilic, ulei · 70×50 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('nuferi3.jpg','Plasturi Naturali','Nuferi III','Acrilic, ulei · 70×50 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="nuferi3.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Nuferi III</div>
+          <div class="g-tech">Acrilic, ulei · 70×50 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('irisi1.jpg','Plasturi Naturali','Irisi I','Acrilic, ulei · 70×50 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="irisi1.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Irisi I</div>
+          <div class="g-tech">Acrilic, ulei · 70×50 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('irisi2.jpg','Plasturi Naturali','Irisi II','Acrilic, ulei · 70×50 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="irisi2.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Irisi II</div>
+          <div class="g-tech">Acrilic, ulei · 70×50 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('irisi3.jpg','Plasturi Naturali','3 Irisi','Acrilic, ulei · 70×50 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="irisi3.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">3 Irisi</div>
+          <div class="g-tech">Acrilic, ulei · 70×50 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('irisi_roz.jpg','Plasturi Naturali','Irisi roz','Acrilic, ulei · 40×40 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="irisi_roz.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Irisi roz</div>
+          <div class="g-tech">Acrilic, ulei · 40×40 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('irisi_albi.jpg','Plasturi Naturali','Irisi albi','Acrilic, ulei · 30×40 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="irisi_albi.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Irisi albi</div>
+          <div class="g-tech">Acrilic, ulei · 30×40 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('flori_camp.jpg','Plasturi Naturali','Flori de câmp','Acrilic, ulei · 40×40 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="flori_camp.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Flori de câmp</div>
+          <div class="g-tech">Acrilic, ulei · 40×40 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('ponton.jpg','Plasturi Naturali','Ponton Nucet','Acrilic, ulei · 40×40 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="ponton.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Ponton Nucet</div>
+          <div class="g-tech">Acrilic, ulei · 40×40 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('copac_curcubeu.png','Plasturi Naturali','Copacul curcubeu','Acrilic, ulei · 40×40 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="copac_curcubeu.png" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Copacul curcubeu</div>
+          <div class="g-tech">Acrilic, ulei · 40×40 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('paltinis.jpg','Plasturi Naturali','Paltiniș','Acrilic, ulei · 45×35 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="paltinis.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Paltiniș</div>
+          <div class="g-tech">Acrilic, ulei · 45×35 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('nuferi1_det.jpg','Plasturi Naturali','Nuferi I — Detaliu','Acrilic, ulei · 70×50 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="nuferi1_det.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Nuferi I — Detaliu</div>
+          <div class="g-tech">Acrilic, ulei · 70×50 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+      <div class="g-item" onclick="openModal('nuferi3_det.jpg','Plasturi Naturali','Nuferi III — Detaliu','Acrilic, ulei · 70×50 cm · 2025')">
+        <div class="g-img-wrap"><img class="g-img" src="nuferi3_det.jpg" alt=""><span class="g-badge avail">Disponibil</span></div>
+        <div class="g-body">
+          <div class="g-title">Nuferi III — Detaliu</div>
+          <div class="g-tech">Acrilic, ulei · 70×50 cm</div>
+          <div class="g-foot"><div class="g-price">La comandă</div><button class="g-btn">Detalii</button></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-img">
+    <div class="about-corner"></div>
+    <img src="1.webp" alt="Bianca Bulboacă" style="object-position:center top">
+    <!-- hand-drawn asymmetric red heart -->
+    <svg style="position:absolute;bottom:100px;left:-28px;width:72px;height:66px;z-index:3;transform:rotate(-8deg)" viewBox="0 0 80 72" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="hw">
+          <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/>
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+      </defs>
+      <!-- filled heart slightly transparent -->
+      <path d="M39 18 C34 5,10 4,10 21 C10 36,24 48,39 63 C54 48,70 36,70 21 C70 4,46 5,39 18Z"
+        fill="rgba(192,57,43,.15)" filter="url(#hw)"/>
+      <!-- main outline stroke - asymmetric, hand-drawn -->
+      <path d="M40 20 C35 6,11 5,11 22 C10 37,25 49,40 64 C55 49,71 37,70 22 C69 5,47 6,40 20Z"
+        fill="none" stroke="#c0392b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#hw)"/>
+      <!-- second imperfect stroke for hand-drawn texture -->
+      <path d="M39 19 C33 7,12 6,12 21 C11 35,22 46,39 62" fill="none" stroke="#c0392b" stroke-width="1.1" stroke-linecap="round" opacity=".5" filter="url(#hw)"/>
+      <!-- small scratch near top right for authenticity -->
+      <path d="M58 14 C63 10,68 12,67 18" fill="none" stroke="#c0392b" stroke-width="1" stroke-linecap="round" opacity=".35"/>
+    </svg>
+    <div class="about-q">
+      <p>Pictez de când mă știu, iar culoarea a fost mereu un spațiu de liniște.</p>
+      <cite>— Bianca Bulboacă</cite>
+    </div>
+  </div>
+  <div>
+    <p class="ab-tag">Despre Artist</p>
+    <h2 class="ab-h2">Bianca<br><em>Bulboacă</em></h2>
+    <div class="ab-div"></div>
+    <p class="ab-p">Înscrisă într-un registru aproape de „open impressionism", Bianca lucrează în straturi: un strat de bază din acrilic care fixează structura, peste care intervine cu accente și highlights în ulei, pentru profunzime și textură tactilă.</p>
+    <p class="ab-p" style="margin-top:16px">Temele sale sunt diverse — natură, portrete, fragmente de atmosferă — cu o constantă: captarea emoției și a stării, a reziduului unui moment trăit.</p>
+    <div class="ab-sig">Bianca B.</div>
+    <div class="ab-links">
+      <a href="mailto:bbartstudiob@gmail.com" class="ab-link">✉ bbartstudiob@gmail.com</a>
+      <a href="tel:+40728994711" class="ab-link">☎ 0040 728 994 711</a>
+      <a href="https://www.instagram.com/bb.studioart/" target="_blank" class="ab-link">◎ @bb.studioart</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div>
+    <p class="c-tag">Comandă</p>
+    <h2 class="c-h2">O lucrare<br><em>pentru tine.</em></h2>
+    <p class="c-p">Ești interesat de o lucrare din colecție sau dorești un portret personalizat? Scrie-mi și discutăm.</p>
+    <div class="c-dets">
+      <div class="c-d"><div class="c-d-i">✉</div><span class="c-d-t"><a href="mailto:bbartstudiob@gmail.com">bbartstudiob@gmail.com</a></span></div>
+      <div class="c-d"><div class="c-d-i">☎</div><span class="c-d-t">0040 728 994 711</span></div>
+      <div class="c-d"><div class="c-d-i">📍</div><span class="c-d-t">SIBIU, Romania</span></div>
+      <div class="c-d"><div class="c-d-i">◎</div><span class="c-d-t"><a href="https://instagram.com/bb.studioart" target="_blank">@bb.studioart</a></span></div>
+    </div>
+  </div>
+  <div class="con-r">
+    <input class="inp" type="text" placeholder="Numele tău">
+    <input class="inp" type="email" placeholder="Email">
+    <input class="inp" id="subject-inp" type="text" placeholder="Lucrarea care te interesează">
+    <textarea class="inp" placeholder="Mesajul tău..."></textarea>
+    <button class="btn-send">Trimite Mesajul</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo"><img src="logo.png" alt="BB"><span>Bianca Bulboacă · Painting</span></div>
+  <p>© 2026 · Toate lucrările sunt originale</p>
+  <p>SIBIU, Romania</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// CURSOR
+const C=document.getElementById('cur'),CR=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function t(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+  C.style.left=mx+'px';C.style.top=my+'px';
+  CR.style.left=rx+'px';CR.style.top=ry+'px';
+  requestAnimationFrame(t);
+})();
+document.querySelectorAll('a,button,.g-item,.col-tab').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{C.style.width='16px';C.style.height='16px';C.style.background='#9c5a3c';CR.style.width='52px';CR.style.height='52px';CR.style.borderColor='rgba(156,90,60,.55)'});
+  el.addEventListener('mouseleave',()=>{C.style.width='9px';C.style.height='9px';C.style.background='var(--earth)';CR.style.width='36px';CR.style.height='36px';CR.style.borderColor='rgba(140,110,75,.4)'});
+});
+
+// COLLECTION SWITCH
+function switchCol(id){
+  document.querySelectorAll('.collection-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.col-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx=id==='col1'?0:1;
+  document.querySelectorAll('.col-tab')[idx].classList.add('active');
+}
+
+// SCROLL REVEAL
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}});
+},{threshold:.1});
+document.querySelectorAll('.g-item,.about-img,.col-tab').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(22px)';
+  el.style.transition='opacity .7s ease,transform .7s ease';
+  obs.observe(el);
+});
+
+// MODAL
+function openModal(img,col,title,info){
+  document.getElementById('modal-img').src=img;
+  document.getElementById('modal-col').textContent='Colecția '+col+' · 2025';
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-info').innerHTML=
+    '<p>'+info+'</p>'+
+    '<p style="margin-top:8px">Lucrare originală, unică. Semnată de artist.</p>'+
+    '<p style="margin-top:4px">Certificat de autenticitate inclus.</p>'+
+    '<p style="margin-top:4px">Livrare națională asigurată.</p>';
+  document.getElementById('modal').dataset.title=title;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow=''}
+function commandPainting(){
+  do
